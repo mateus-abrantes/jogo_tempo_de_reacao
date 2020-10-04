@@ -2,6 +2,7 @@
 let timer, tempo1, tempo2, tempo_m;
 let vermelho, azul, amarelo, verde;
 let tentativa;
+let tamanho_bola;
 let cores;
 let cor;
 let p_x, p_y;
@@ -17,17 +18,18 @@ function gerar_nova_cor() {
         // gera a cor aleataria 
         cor = random(cores);
         // gera a posicao em que a bola ira aparecer de forma randomica
-        p_x = random(100, width - 100);
-        p_y = random(350, height - 350);
-        // tempo que a bola apareceu
-        tempo1 = millis();
+        p_x = random(200, width - 200);
+        p_y = random(380, height - 380);
+        tamanho_bola = random(50, 140);
         // tentativa ok
         tentativa = true;
+        // tempo que a bola apareceu
+        tempo1 = millis();
     }
     // define a cor da bola
     fill(cor);
     // desenha a bola
-    circle(p_x, p_y, 50)
+    circle(p_x, p_y, tamanho_bola)
 }
 
 // Cronometro
@@ -50,6 +52,8 @@ function setup() {
     tempo2 = 0;
     tempo_m = 0;
     score = 0;
+    // tamanho da bola
+    tamanho_bola = random(50, 140);
     // Resposta certa ou errada do usuario
     resposta = '';
     // Numero de acertos
@@ -64,8 +68,8 @@ function setup() {
     // Sortei de uma cor inicial
     cor = random(cores);
     // Posicoes iniciais da bola de forma aleatoria
-    p_x = random(100, width - 100);
-    p_y = random(350, height - 350);
+    p_x = random(200, width - 200);
+    p_y = random(380, height - 380);
     // criacao da tela do jogo
     createCanvas(720, 720);
     // Definicao do framerate do jogo
