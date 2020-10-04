@@ -15,6 +15,10 @@ let start;
 // gera uma nova cor aleatoria para a bola a cada 2 segundos
 function gerar_nova_cor(tempo_bola) {
     if (frameCount % tempo_bola == 0) {
+        // penalizacao de nao ter respondido
+        if (tentativa == true) {
+            score = score - 1;
+        }
         // gera a cor aleataria 
         cor = random(cores);
         // gera a posicao em que a bola ira aparecer de forma randomica
