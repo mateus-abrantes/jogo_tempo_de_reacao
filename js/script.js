@@ -1,6 +1,7 @@
 // Declaracao de variaveis
 let timer, tempo1, tempo2, tempo_m;
 let vermelho, azul, amarelo, verde;
+let tentativa;
 let cores;
 let cor;
 let p_x, p_y;
@@ -20,6 +21,8 @@ function gerar_nova_cor() {
         p_y = random(350, height - 350);
         // tempo que a bola apareceu
         tempo1 = millis();
+        // tentativa ok
+        tentativa = true;
     }
     // define a cor da bola
     fill(cor);
@@ -39,6 +42,8 @@ function setup() {
     // variaveis boleanas que controlam o inicio do jogo e liberacao das teclas
     start = false;
     jogo_ativo = false;
+    // Tentativa 
+    tentativa = false;
     // variaveis de tempo
     timer = 5;
     tempo1 = 0;
@@ -138,7 +143,7 @@ function draw() {
 //Funcao que verifica se uma respectiva tecla foi precionada
 function keyPressed() {
     // Verifica se o jogo esta em execucao
-    if (jogo_ativo == true) {
+    if (jogo_ativo == true && tentativa == true) {
         // Verifica se a tecla de seta para esquerda foi ativada e a bola atual e da cor vermelha
         if ((keyCode === LEFT_ARROW) && (cor === vermelho)) {
             // calcula o tempo entre o surgimento da bola e a respota do usuario
@@ -151,6 +156,8 @@ function keyPressed() {
             resposta = 'ACERTO';
             // incrementa o numero de acertos
             acertos = acertos + 1;
+            // desabilita tentativa 
+            tentativa = false;
             // Verifica se a tecla de seta para cima foi ativada e a bola atual e da cor azul
         } else if ((keyCode === UP_ARROW) && (cor === azul)) {
             // calcula o tempo entre o surgimento da bola e a respota do usuario
@@ -162,8 +169,10 @@ function keyPressed() {
             // Resposta correta
             resposta = 'ACERTO';
             // incrementa o numero de acertos
-            acertos = acertos + 1
-                // Verifica se a tecla de seta para direita foi ativada e a bola atual e da cor amarelo
+            acertos = acertos + 1;
+            // desabilita tentativa 
+            tentativa = false;
+            // Verifica se a tecla de seta para direita foi ativada e a bola atual e da cor amarelo
         } else if ((keyCode === RIGHT_ARROW) && (cor === amarelo)) {
             // calcula o tempo entre o surgimento da bola e a respota do usuario
             tempo2 = millis() - tempo1;
@@ -174,8 +183,10 @@ function keyPressed() {
             // Resposta correta
             resposta = 'ACERTO';
             // incrementa o numero de acertos
-            acertos = acertos + 1
-                // Verifica se a tecla de seta para baixo foi ativada e a bola atual e da cor verde
+            acertos = acertos + 1;
+            // desabilita tentativa 
+            tentativa = false;
+            // Verifica se a tecla de seta para baixo foi ativada e a bola atual e da cor verde
         } else if ((keyCode === DOWN_ARROW) && (cor === verde)) {
             // calcula o tempo entre o surgimento da bola e a respota do usuario
             tempo2 = millis() - tempo1;
@@ -186,8 +197,10 @@ function keyPressed() {
             // Resposta correta
             resposta = 'ACERTO';
             // incrementa o numero de acertos
-            acertos = acertos + 1
-                // Verifica se uma tecla foi ativada e nao corresponde a nenhuma combinacao acima
+            acertos = acertos + 1;
+            // desabilita tentativa 
+            tentativa = false;
+            // Verifica se uma tecla foi ativada e nao corresponde a nenhuma combinacao acima
         } else {
             // calcula o tempo entre o surgimento da bola e a respota do usuario
             tempo2 = tempo2 = millis() - tempo1;
@@ -195,6 +208,8 @@ function keyPressed() {
             score = score - 1;
             // Resposta errada
             resposta = 'ERRO';
+            // desabilita tentativa 
+            tentativa = false;
         }
     }
 }
