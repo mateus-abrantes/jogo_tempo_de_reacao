@@ -1,5 +1,5 @@
 // Declaracao de variaveis
-let timer, tempo1, tempo2, tempo_m;
+let timer, tempo1, tempo2, tempo_m, tempo_bola;
 let vermelho, azul, amarelo, verde;
 let tentativa;
 let tamanho_bola;
@@ -13,16 +13,19 @@ let jogo_ativo;
 let start;
 
 // gera uma nova cor aleatoria para a bola a cada 2 segundos
-function gerar_nova_cor() {
-    if (frameCount % 120 == 0) {
+function gerar_nova_cor(tempo_bola) {
+    if (frameCount % tempo_bola == 0) {
         // gera a cor aleataria 
         cor = random(cores);
         // gera a posicao em que a bola ira aparecer de forma randomica
-        p_x = random(200, width - 200);
-        p_y = random(380, height - 380);
+        p_x = round(random(200, width - 200));
+        p_y = round(random(380, height - 380));
         tamanho_bola = random(50, 140);
         // tentativa ok
         tentativa = true;
+        // tempo de apareceimento de um nova bola
+        tempo_bola = random([120, 150, 180, 210]);
+        // console.log(tempo_bola);
         // tempo que a bola apareceu
         tempo1 = millis();
     }
@@ -51,6 +54,7 @@ function setup() {
     tempo1 = 0;
     tempo2 = 0;
     tempo_m = 0;
+    tempo_bola = 60;
     score = 0;
     // tamanho da bola
     tamanho_bola = random(50, 140);
@@ -68,8 +72,8 @@ function setup() {
     // Sortei de uma cor inicial
     cor = random(cores);
     // Posicoes iniciais da bola de forma aleatoria
-    p_x = random(200, width - 200);
-    p_y = random(380, height - 380);
+    p_x = round(random(200, width - 200));
+    p_y = round(random(380, height - 380));
     // criacao da tela do jogo
     createCanvas(720, 720);
     // Definicao do framerate do jogo
@@ -107,7 +111,7 @@ function draw() {
                 background(220);
                 jogo_ativo = true;
                 // Gerando uma bola com uma nova cor e posicao
-                gerar_nova_cor();
+                gerar_nova_cor(tempo_bola);
                 fill(0);
                 textSize(20);
                 text("Restart", 50, 60);
