@@ -11,7 +11,35 @@ let score;
 let resposta;
 let jogo_ativo;
 let start;
+let instrucoes;
+let start_img;
+let instrucoes_img;
+let botao_restart_img;
+let botao_exit_img;
+let screen_resultado_img;
+let tempo_reacao_img;
+let tempo_reacao_m_img;
+let tentativa_img;
+let menu_background_img;
+let score_img;
+let score_result_img;
+let font_LuckiestGuy;
 
+function preload() {
+    start_img = loadImage('imagens/start.png');
+    instrucoes_img = loadImage('imagens/instrucoes.png');
+    botao_restart_img = loadImage('imagens/restart.png');
+    botao_exit_img = loadImage('imagens/exit.png');
+    tempo_reacao_img = loadImage('imagens/a1.png');
+    tempo_reacao_m_img = loadImage('imagens/a2.png');
+    tentativa_img = loadImage('imagens/tentativa.png');
+    score_img = loadImage('imagens/score.png');
+    score_result_img = loadImage('imagens/score_result.png');
+    menu_background_img = loadImage('imagens/menu.png');
+    screen_resultado_img = loadImage('imagens/resultado.png');
+    font_LuckiestGuy = loadFont('fonts/LuckiestGuy.ttf');
+
+}
 // gera uma nova cor aleatoria para a bola a cada 2 segundos
 function gerar_nova_cor(tempo_bola) {
     if (frameCount % tempo_bola == 0) {
@@ -46,10 +74,22 @@ function count_down_timer() {
     }
 }
 
+// funcao que muda a cor do texto da resposta
+function cor_resposta(res) {
+    if (res == "ACERTO") {
+        return fill(verde);
+    } else {
+        return fill(vermelho);
+    }
+}
+
+
 // funcao de inicializacao
 function setup() {
     // variaveis boleanas que controlam o inicio do jogo e liberacao das teclas
     start = false;
+    instrucoes = false;
+    restart = false;
     jogo_ativo = false;
     // Tentativa 
     tentativa = false;
@@ -89,6 +129,8 @@ function draw() {
     clear();
     // Define a cor da tela
     background(220);
+    // fonte do texto
+    textFont(font_LuckiestGuy);
     // Tamanho do texto
     textSize(100);
     // Identacao do texto ao centro
@@ -98,11 +140,22 @@ function draw() {
     // Verificaco para iniciar o jogo
     if (start == false) {
         textSize(50);
-        text('START', ((width / 2)), 300);
+        image(start_img, 260, 260, 200, 100);
+        // text('START', ((width / 2)), 300);
         // Verificacao se foi clicado no texto
         if (mouseIsPressed) {
             if ((mouseX >= ((width / 2) - 80) && mouseX <= ((width / 2) + 80)) && (mouseY >= (270) && mouseY <= 320)) {
                 start = true;
+            }
+        }
+        // Verifica se as instrucoes ja foram mostradas
+    } else if (instrucoes == false) {
+        // imagem das instrucoes de jogabilidade
+        image(instrucoes_img, 20, 30, 680, 680);
+        // Verifica se o botao de restart foi clicado
+        if (mouseIsPressed) {
+            if ((((mouseX >= 460) && mouseX <= 630)) && (mouseY >= (535) && mouseY <= 615)) {
+                instrucoes = true;
             }
         }
     } else {
@@ -118,17 +171,27 @@ function draw() {
                 gerar_nova_cor(tempo_bola);
                 fill(0);
                 textSize(20);
-                text("Restart", 50, 60);
-                // Verificacao se foi clicado no texto
+                image(menu_background_img, 0, -10, 720, 180);
+                image(botao_restart_img, 20, 40, 100, 50);
+                // Verifica se o botao de restart foi clicado
                 if (mouseIsPressed) {
-                    if ((mouseX >= (15) && mouseX <= (90)) && (mouseY >= (50) && mouseY <= 70)) {
+                    if ((mouseX >= (20) && mouseX <= (120)) && (mouseY >= (40) && mouseY <= 90)) {
                         setup();
+                        instrucoes = true;
+                        start = true;
                     }
                 }
-                text('Tempo de resposta: ' + round(tempo2, 2), 300, 50);
-                text('Tempo de resposta media: ' + round(tempo_m / acertos, 2), 300, 80);
-                text(resposta, 600, 50);
-                text(score, width - 50, 50);
+                image(tempo_reacao_img, 150, 15, 300, 70);
+                fill(amarelo);
+                text(round(tempo2, 2), 355, 48);
+                image(tempo_reacao_m_img, 150, 90, 300, 70);
+                text(round(tempo_m / acertos, 2), 355, 123);
+                image(tentativa_img, 460, 20, 150, 130);
+                cor_resposta(resposta);
+                text(resposta, 535, 120);
+                fill(amarelo);
+                image(score_img, 630, 05, 80, 150);
+                text(score, width - 50, 100);
                 // console.log(tempo2);
             } else {
                 // Quando o jogador termina "ganha"
@@ -136,16 +199,25 @@ function draw() {
                 // console.log(tempo2);
                 jogo_ativo = false;
                 textSize(50);
-                text('Resultado', ((width / 2)), 300);
+                image(screen_resultado_img, 20, 30, 680, 660);
+                fill(amarelo);
                 textSize(20);
-                text('Tempo de resposta media: ' + round(tempo_m / acertos, 2) + 'ms', ((width / 2)), 350);
-                text('Score: ' + score, ((width / 2)), 380);
+                image(tempo_reacao_m_img, 210, 290, 300, 70);
+                text(round(tempo_m / acertos, 2) + 'ms', 420, 323);
+                image(score_result_img, 210, 390, 300, 70);
+                text(score, 340, 423);
                 textSize(40);
-                text("Restart", ((width / 2)), 450);
-                // Verificacao se foi clicado no texto
+                image(botao_restart_img, 180, 610, 150, 50);
+                image(botao_exit_img, 380, 610, 150, 50);
+                // Verifica se o botao de restart ou de exit foi clicado
                 if (mouseIsPressed) {
-                    if ((mouseX >= ((width / 2) - 70) && mouseX <= ((width / 2) + 70)) && (mouseY >= (430) && mouseY <= 470)) {
+                    if ((mouseX >= (180) && mouseX <= (330)) && (mouseY >= (610) && mouseY <= 660)) {
                         setup();
+                        instrucoes = true;
+                        start = true;
+                    }
+                    if ((mouseX >= (380) && mouseX <= (530)) && (mouseY >= (610) && mouseY <= 660)) {
+                        remove();
                     }
                 }
             }
